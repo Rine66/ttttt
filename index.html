@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>test</title>
+		<style type="text/css">
+			*{padding:0;margin:0}
+			body{padding-bottom:80px;}
+			.main{display: block;margin-right: auto;margin-left: auto;width: 540px;}
+			a{height: 342px;width: 476px;overflow: hidden;display: block;cursor:pointer}
+			/*缩放*/
+			/*添加时间特效*/
+			.icon{transition: transform 1s ease-out;}
+			.icon:hover{transform: scale(1.2,1.2);} 
+
+			/*缩放2*/
+			.cc{transition: transform 1s ease-out;transform: scale(1.2,1.2);}
+			/*当合并时，静态页面不显示效果，但如果是通过JQ动态添加该样式，则会显示效果*/
+			
+			/*变亮*/
+			.iconColor{background: rgba(0,0,0,.5);position: absolute;left: 0;top: 0;display: inline-block;height: 342px;width: 476px;transition: background 1s;}   
+			.iconColor:hover{background: rgba(0,0,0,0);}
+			p{color: #fff;font-size: 24px;text-align: center;margin-top: 150px;}
+			
+			/*3D旋转*/
+			.iconColor2{background: rgba(89,208,255,0.7);position: absolute;left: 0;top: 0;display: block;height: 342px;width: 476px;transition: all 0.8s ease;}   
+			.iconColor2:hover{background:rgba(0,0,0,0.4);transform:rotateY(180deg)}
+			.title{position: absolute;left: 0;top: 0;color: #fff;font-size: 24px;text-align: center;margin-top: 150px;width: 100%;font-weight: bold;}
+		</style>
+		<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("button").click(function(){
+					$(".xx").toggleClass("cc");
+				});
+			})
+		</script>
+	</head>
+	<body>
+	<div class="main">
+		<h3>放大:</h3>
+		<a><img src="banner.jpg" alt="" class="icon"/></a>
+		<br>
+		
+		<h3>放大2:<button>点击按钮</button></h3>
+		<a><img src="banner.jpg" alt="" class="xx"/></a>
+		<br>
+		
+		<h3>变亮:</h3>
+		<a style="position: relative;">
+			<img id="banner"src="banner.jpg" alt=""/>
+			<span class="iconColor">
+				<p>广州天河区丽影广场</p>
+			</span>
+		</a>
+		<br>
+		
+		<h3>3D旋转:</h3>
+		<a style="position: relative;">
+			<img id="banner"src="banner.jpg" alt=""/>
+			<span class="iconColor2"></span>
+			<p class="title">广州天河区丽影广场</p>
+		</a>
+	</div>
+	</body>
+</html>
