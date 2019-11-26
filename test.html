@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+	    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">-->
+	    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	    <title>My Chart.js chart</title>
+	    <style type="text/css">
+    	.top{background-color:#253a89;color:white;line-height:3;margin-bottom:10px;font-weight:bold}
+		.flex{display:flex;justify-content:space-between;line-height:2.8;font-weight:bold;color:#34407c;background:#d8d7e7;border-bottom:2px solid #34407c;border-right:2px solid #34407c}
+		.flex:last-child{border-right:none}
+		table{font-weight:bold}
+		thead,tfoot{color:#34407c}
+		.blue{background:#253a89}
+		.t1{color:#2473ae}
+		.t2{color:#8d34a2}
+		.t3{color:#d5bd35}
+		.t4{color:#888888}
+		.t5{color:#37665c}
+		.t6{color:#cb8464}
+	    </style>
+	</head>
+	<body>
+		<div class="text-center top">Trading Period：<span id="period"></span> of 14</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-8 ">
+					<strong>Note</strong>
+					<div>Your cannot trade during the first three periods.</div>
+					<div class="alert alert-info">
+						<strong>Remember：</strong><br />
+						Your cannot trade during the first three periods.
+					</div>
+				</div>
+				<div class="col-xs-4 ">
+					<button class="btn btn-primary btn-lg blue" onclick="nextPeriod()">Next Period</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4 flex ">
+					<div>Cash:</div>
+					<div>$<span id="Cash"></span></div>
+				</div>
+				<div class="col-xs-4 flex ">
+					<div>Shares:</div>
+					<div>$<span id="Shares"></span></div>
+				</div>
+				<div class="col-xs-4 flex ">
+					<div>Total Assets:</div>
+					<div>$<span id="Total"></span></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6 ">
+					<canvas id="myChart"></canvas>
+				</div>
+				<div class="col-xs-6 ">
+					<canvas id="myChart2"></canvas>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<table class="table">
+						<thead>
+						    <tr>
+						      	<th>Share</th>
+								<th>Buy</th>
+								<th>Sell</th>
+								<th>Current Price</th>
+								<th>Share Owned</th>
+								<th width="150">Weighted Average Purchase Price</th>
+								<th width="80">Realized Gain/Loss</th>
+								<th width="80">Unrealized Gain/Loss</th>
+						    </tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td class="t1">Share A</td>
+							<td><button class="btn btn-success" onclick="buy(0)">Buy</button></td>
+							<td><button class="btn btn-danger" onclick="sell(0)">Sell</button></td>
+							<td class="CurrentPrice">Data</td>
+							<td class="num">Data</td>
+							<td>Data</td>
+							<td>Data</td>
+							<td>Data</td>
+						</tr>
+						<tr>
+							<td class="t2">Share B</td>
+							<td><button class="btn btn-success" onclick="buy(1)">Buy</button></td>
+							<td><button class="btn btn-danger" onclick="sell(1)">Sell</button></td>
+							<td class="CurrentPrice">Data</td>
+							<td class="num">Data</td>
+							<td>Data</td>
+							<td>Data</td>
+							<td>Data</td>
+						</tr>
+						<tr>
+							<td class="t3">Share C</td>
+							<td><button class="btn btn-success" onclick="buy(2)">Buy</button></td>
+							<td><button class="btn btn-danger" onclick="sell(2)">Sell</button></td>
+							<td class="CurrentPrice">Data</td>
+							<td class="num">Data</td>
+							<td>Data</td>
+							<td>Data</td>
+							<td>Data</td>
+						</tr>
+						<tr>
+							<td class="t4">Share D</td>
+							<td><button class="btn btn-success" onclick="buy(3)">Buy</button></td>
+							<td><button class="btn btn-danger" onclick="sell(3)">Sell</button></td>
+							<td class="CurrentPrice">Data</td>
+							<td class="num">Data</td>
+							<td>Data</td>
+							<td>Data</td>
+							<td>Data</td>
+						</tr>
+						<tr>
+							<td class="t5">Share E</td>
+							<td><button class="btn btn-success" onclick="buy(4)">Buy</button></td>
+							<td><button class="btn btn-danger" onclick="sell(4)">Sell</button></td>
+							<td class="CurrentPrice">Data</td>
+							<td class="num">Data</td>
+							<td>Data</td>
+							<td>Data</td>
+							<td>Data</td>
+						</tr>
+						<tr>
+							<td class="t6">Share F</td>
+							<td><button class="btn btn-success" onclick="buy(5)">Buy</button></td>
+							<td><button class="btn btn-danger" onclick="sell(5)">Sell</button></td>
+							<td class="CurrentPrice">Data</td>
+							<td class="num">Data</td>
+							<td>Data</td>
+							<td>Data</td>
+							<td>Data</td>
+						</tr>
+						</tbody>
+						<tfoot>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td>Total:</td>
+							<td>$0.00</td>
+							<td>$0.00</td>
+						</tfoot>
+						
+					</table>
+				</div>
+			</div>
+		</div>
+	</body>
+<script>
+var arr=[-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+var Cash=10000
+var Shares=0
+var Total=Cash+Shares
+document.getElementById("Cash").innerHTML=Cash
+document.getElementById("Shares").innerHTML=Shares
+document.getElementById("Total").innerHTML=Total
+//股票数组，共6支股票。
+var _sharePrices = new Array(6);
+//每个股票购买数量股票数组，共6支股票
+var _buyList = [0,0,0,0,0,0];
+//当前Period的标号，从0开始到17共18个，代表period-3到period 14。
+var _currentPeriodIndex = 0;
+//各支股票的涨跌概率。
+var _probabilities = [0.5,0.65,0.35,0.55,0.45,0.5];
+document.getElementById("period").innerHTML=arr[_currentPeriodIndex]
+//程序初始化
+function initialization(){
+	this._currentPeriodIndex = 0;
+	for(var i=0; i<_sharePrices.length; i++){
+    	this._sharePrices[i] = new Array(18);
+		//初始化6支股票的起始值。随机范围为60~150之间的正整数。
+		this._sharePrices[i][0] = Math.floor(Math.random() * 90 + 60);
+    }
+	console.log("ss",_sharePrices)
+}
+function initializationHtml(){
+	console.log("_sharePrices",_sharePrices)
+	var list=document.getElementsByClassName("CurrentPrice")
+	for (var i=0;i<list.length;i++) {
+		list[i].innerHTML=_sharePrices[i][_currentPeriodIndex];
+	}
+	var numlist=document.getElementsByClassName("num")
+	for (var i=0;i<numlist.length;i++) {
+		numlist[i].innerHTML=_buyList[i];
+	}
+	document.getElementById("period").innerHTML=arr[_currentPeriodIndex]
+	document.getElementById("Cash").innerHTML=Cash
+}	
+
+//生成指定period内，各股票的新价格。
+function newPrices(period){
+	for(var i=0; i<_sharePrices.length; i++){
+		//当前股票的涨跌概率，与随机数进行比较。如果大于则在上一期period的基础上上涨随机1~5元，否则下跌随机1~5元。下跌
+    	if(_probabilities[i] > Math.random())
+    		this._sharePrices[i][period] = this._sharePrices[i][period-1] + Math.floor(Math.random() * 4 + 1);
+        else
+        	this._sharePrices[i][period] = this._sharePrices[i][period-1] - Math.floor(Math.random() * 4 + 1);
+    }
+	console.log("ss2",_sharePrices)
+	initializationHtml()
+}
+initialization();
+initializationHtml()
+console.log("_currentPeriodIndex",_currentPeriodIndex)
+
+var ctx = document.getElementById("myChart").getContext('2d');
+//var ctx = document.getElementById("myChart");//也可以实现
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],
+        datasets: [{
+	        data: _sharePrices[0],
+	        label: "stockA",
+	        borderColor: "#2473ae",
+	        fill: false
+	      }, {
+	        data: _sharePrices[1],
+	        label: "stockB",
+	        borderColor: "#8d34a2",
+	        fill: false
+	      }, {
+	        data: _sharePrices[2],
+	        label: "stockC",
+	        borderColor: "#d5bd35",
+	        fill: false
+	      }, {
+	        data: _sharePrices[3],
+	        label: "stockD",
+	        borderColor: "#888888",
+	        fill: false
+	      }, {
+	        data: _sharePrices[4],
+	        label: "stockE",
+	        borderColor: "#37665c",
+	        fill: false
+	      }, {
+	        data: _sharePrices[5],
+	        label: "stockF",
+	        borderColor: "#cb8464",
+	        fill: false
+	      }]
+    },
+    options: {
+    	title: {
+            display: true,
+            text: 'Trading Period'
+        }
+    }
+});
+
+function nextPeriod(){
+	_currentPeriodIndex++;
+		if(_currentPeriodIndex<18){
+			console.log("_currentPeriodIndex",_currentPeriodIndex)
+			newPrices(_currentPeriodIndex);
+			myChart.data.datasets[0].data = _sharePrices[0];
+			myChart.data.datasets[1].data = _sharePrices[1];
+			myChart.data.datasets[2].data = _sharePrices[2];
+			myChart.data.datasets[3].data = _sharePrices[3];
+			myChart.data.datasets[4].data = _sharePrices[4];
+			myChart.data.datasets[5].data = _sharePrices[5];
+		    myChart.update();
+		}
+		console.log("_sharePrices---",_sharePrices)
+}
+function buy(e){
+	console.log("_currentPeriodIndex",_currentPeriodIndex,e)
+	console.log("price",_sharePrices[e][_currentPeriodIndex])
+	var price=_sharePrices[e][_currentPeriodIndex]
+	if(_currentPeriodIndex>2){
+		_buyList[e]=++_buyList[e]
+		Cash=Cash-_buyList[e]*price
+		initializationHtml()
+		console.log("可以购买",_currentPeriodIndex,_buyList)
+	}
+}
+function sell(e){
+	console.log("卖出",e)
+	if(_buyList[e]!=0){
+		console.log("可以卖出")
+		_buyList[e]=--_buyList[e]
+	}
+	initializationHtml()
+}
+</script>
+
+<script type="text/javascript">
+var ctx2 = document.getElementById("myChart2").getContext('2d');
+//var ctx = document.getElementById("myChart");//也可以实现
+//var ctx = $("#myChart"); //JQ方式
+var myChart2 = new Chart(ctx2, {
+    type: 'line',
+    data: {
+        labels: [-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],
+        datasets: [{
+	        data: [1000,1000,1000,1000,2000],
+	        label: "stockA",
+	        borderColor: "#2473ae",
+	        fill: false
+	      }]
+    },
+    options: {
+    	title: {
+            display: true,
+            text: 'Trading Period'
+        }
+    }
+});	
+</script>
+</html>
